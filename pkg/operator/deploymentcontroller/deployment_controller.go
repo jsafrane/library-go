@@ -384,7 +384,7 @@ func hasFinishedProgressing(deployment *appsv1.Deployment) bool {
 		// Any condition in the status may be stale.
 		return false
 	}
-	// Deployment that are fully deployed get Progressing condition with Reason NewReplicaSetAvailable condition.
+	// Deployment whose rollout is complete gets Progressing condition with Reason NewReplicaSetAvailable condition.
 	// https://kubernetes.io/docs/concepts/workloads/controllers/deployment/#complete-deployment
 	// Any subsequent missing replicas (e.g. caused by a node reboot) must not not change the Progressing condition.
 	for _, cond := range deployment.Status.Conditions {

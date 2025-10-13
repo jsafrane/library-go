@@ -552,7 +552,7 @@ func TestSync(t *testing.T) {
 			},
 		},
 		{
-			// Deployment is fully deployed and its status is synced to CR
+			// Deployment is fully deployed with a missing pod and its status is synced to CR
 			name: "pod missing after fully deployed",
 			initialObjects: testObjects{
 				deployment: makeDeployment(
@@ -579,14 +579,14 @@ func TestSync(t *testing.T) {
 				deployment: makeDeployment(
 					withDeploymentGeneration(1, 1),
 					withDeploymentStatus(replica0, replica0, replica0),
-					withDeploymentConditions(appsv1.DeploymentProgressing, "NewReplicaSetAvailable", corev1.ConditionFalse)), // Deployment is fully deployed
+					withDeploymentConditions(appsv1.DeploymentProgressing, "NewReplicaSetAvailable", corev1.ConditionFalse)), // Deployment is not fully deployed
 				operator: makeFakeOperatorInstance(withGenerations(1)),
 			},
 			expectedObjects: testObjects{
 				deployment: makeDeployment(
 					withDeploymentGeneration(1, 1),
 					withDeploymentStatus(replica0, replica0, replica0),
-					withDeploymentConditions(appsv1.DeploymentProgressing, "NewReplicaSetAvailable", corev1.ConditionFalse)), // Deployment is fully deployed
+					withDeploymentConditions(appsv1.DeploymentProgressing, "NewReplicaSetAvailable", corev1.ConditionFalse)), // Deployment is not fully deployed
 				operator: makeFakeOperatorInstance(
 					// withStatus(replica1),
 					withGenerations(1),
