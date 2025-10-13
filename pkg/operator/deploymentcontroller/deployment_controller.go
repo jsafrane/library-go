@@ -294,7 +294,7 @@ func (c *DeploymentController) syncManaged(ctx context.Context, opSpec *opv1.Ope
 			WithMessage("Deployment is not progressing").
 			WithReason("AsExpected")
 
-		if ok, msg := c.isProgressing(deployment); ok {
+		if ok, msg := isProgressing(deployment); ok {
 			progressingCondition = progressingCondition.
 				WithStatus(opv1.ConditionTrue).
 				WithMessage(msg).
@@ -356,7 +356,7 @@ func (c *DeploymentController) getDeployment(opSpec *opv1.OperatorSpec) (*appsv1
 	return required, nil
 }
 
-func (c *DeploymentController) isProgressing(deployment *appsv1.Deployment) (bool, string) {
+func isProgressing(deployment *appsv1.Deployment) (bool, string) {
 
 	var deploymentExpectedReplicas int32
 	if deployment.Spec.Replicas != nil {
